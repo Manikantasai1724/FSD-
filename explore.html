@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Skills — SkillXchange</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="toast-container"></div>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="logo-icon">🔄</div>
+        SkillXchange
+      </a>
+      <div class="navbar-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link active">Explore Skills</a>
+        <a href="match.html" class="nav-link">Find Match</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="theme-toggle">🌙</button>
+        <a href="requests.html" class="notif-btn">🔔<span class="notif-dot"></span></a>
+        <a href="login.html" class="btn btn-primary btn-sm login-btn">Login</a>
+        <div class="nav-avatar" style="display:none;"></div>
+      </div>
+      <button class="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<nav class="mobile-nav" style="display:none;">
+  <a href="index.html" class="nav-link">🏠 Home</a>
+  <a href="explore.html" class="nav-link">🔍 Explore</a>
+  <a href="match.html" class="nav-link">🎯 Match</a>
+  <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+  <a href="community.html" class="nav-link">🌟 Community</a>
+</nav>
+
+<!-- Hero -->
+<section style="background:var(--gradient);color:white;padding:60px 0 40px;">
+  <div class="container">
+    <div style="max-width:600px;margin:0 auto;text-align:center;">
+      <span class="eyebrow" style="color:rgba(255,255,255,0.7);">Explore Skills</span>
+      <h1 style="color:white;font-size:clamp(1.75rem,4vw,2.75rem);margin:12px 0 16px;">Find Your Next Skill to Learn</h1>
+      <p style="color:rgba(255,255,255,0.8);margin-bottom:28px;">Browse thousands of skills taught by real people. Request an exchange and start learning today.</p>
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="skill-search" class="form-control" placeholder="Search skills, topics, or mentors..." style="background:white;color:var(--text-primary);font-size:1rem;padding:14px 14px 14px 48px;border-radius:var(--radius-full);border:none;box-shadow:var(--shadow-lg);">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filters -->
+<div style="background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:68px;z-index:100;">
+  <div class="container">
+    <div class="filter-bar" style="overflow-x:auto;flex-wrap:nowrap;padding:12px 0;">
+      <button class="filter-btn active" data-category="All">All Skills</button>
+      <button class="filter-btn" data-category="Technology">💻 Technology</button>
+      <button class="filter-btn" data-category="Design">🎨 Design</button>
+      <button class="filter-btn" data-category="Music">🎵 Music</button>
+      <button class="filter-btn" data-category="Language">🗣️ Languages</button>
+      <button class="filter-btn" data-category="Photography">📷 Photography</button>
+      <button class="filter-btn" data-category="Cooking">🍳 Cooking</button>
+      <button class="filter-btn" data-category="Fitness">💪 Fitness</button>
+      <button class="filter-btn" data-category="Writing">📝 Writing</button>
+      <button class="filter-btn" data-category="Marketing">📣 Marketing</button>
+      <button class="filter-btn" data-category="Finance">💰 Finance</button>
+    </div>
+  </div>
+</div>
+
+<!-- Skills Grid -->
+<main style="padding:40px 0 80px;">
+  <div class="container">
+    <!-- Sort bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <div id="results-count" style="color:var(--text-muted);font-size:0.9375rem;"></div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span style="font-size:0.875rem;color:var(--text-muted);">Sort by:</span>
+        <select class="form-control" id="sort-select" style="width:auto;padding:8px 12px;font-size:0.875rem;">
+          <option value="reputation">Top Rated</option>
+          <option value="exchanges">Most Exchanges</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="skills-grid" id="explore-grid">
+      <!-- Skeleton placeholders -->
+      ${Array(8).fill(0).map(() => `
+        <div style="height:220px;" class="card skeleton"></div>
+      `).join('')}
+    </div>
+  </div>
+</main>
+
+<script src="js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Update results count
+  const observer = new MutationObserver(() => {
+    const cards = document.querySelectorAll('#explore-grid .skill-card');
+    const countEl = document.getElementById('results-count');
+    if (countEl) countEl.textContent = `Showing ${cards.length} skill${cards.length !== 1 ? 's' : ''}`;
+  });
+  observer.observe(document.getElementById('explore-grid'), { childList: true });
+
+  // Check URL params for category pre-filter
+  const urlParams = new URLSearchParams(window.location.search);
+  const cat = urlParams.get('cat');
+  if (cat) {
+    const btn = document.querySelector(`.filter-btn[data-category="${cat}"]`);
+    if (btn) btn.click();
+  }
+});
+</script>
+</body>
+</html>

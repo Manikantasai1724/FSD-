@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Match — SkillXchange</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="toast-container"></div>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="logo-icon">🔄</div>
+        SkillXchange
+      </a>
+      <div class="navbar-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Skills</a>
+        <a href="match.html" class="nav-link active">Find Match</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="theme-toggle">🌙</button>
+        <a href="requests.html" class="notif-btn">🔔<span class="notif-dot"></span></a>
+        <a href="login.html" class="btn btn-primary btn-sm login-btn">Login</a>
+        <div class="nav-avatar" style="display:none;"></div>
+      </div>
+      <button class="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<nav class="mobile-nav" style="display:none;">
+  <a href="index.html" class="nav-link">🏠 Home</a>
+  <a href="explore.html" class="nav-link">🔍 Explore</a>
+  <a href="match.html" class="nav-link">🎯 Match</a>
+  <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+  <a href="community.html" class="nav-link">🌟 Community</a>
+</nav>
+
+<!-- Hero Header -->
+<section style="background:var(--gradient);color:white;padding:56px 0 48px;text-align:center;">
+  <div class="container">
+    <span style="display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-full);padding:6px 16px;font-size:0.8125rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:16px;">AI-Powered Matching</span>
+    <h1 style="color:white;font-size:clamp(1.75rem,4vw,2.75rem);margin-bottom:12px;">Find Your Perfect<br>Skill Exchange Partner</h1>
+    <p style="color:rgba(255,255,255,0.8);font-size:1.0625rem;max-width:480px;margin:0 auto;">Our algorithm analyzes complementary skills to find your ideal learning partners.</p>
+  </div>
+</section>
+
+<!-- How Matching Works -->
+<section style="background:var(--surface);border-bottom:1px solid var(--border);padding:28px 0;">
+  <div class="container">
+    <div style="display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="width:36px;height:36px;background:rgba(79,70,229,0.1);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1rem;">🎓</span>
+        <div>
+          <div style="font-weight:700;font-size:0.875rem;">You Teach</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">What you know</div>
+        </div>
+      </div>
+      <span style="font-size:1.5rem;color:var(--primary);">⇄</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="width:36px;height:36px;background:rgba(16,185,129,0.1);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1rem;">📚</span>
+        <div>
+          <div style="font-weight:700;font-size:0.875rem;">You Learn</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">What you want</div>
+        </div>
+      </div>
+      <span style="font-size:1.5rem;color:var(--accent);">= 🎯</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="width:36px;height:36px;background:rgba(245,158,11,0.1);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1rem;">⭐</span>
+        <div>
+          <div style="font-weight:700;font-size:0.875rem;">Perfect Match</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">AI score ≥ 80%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main style="padding:48px 0 80px;">
+  <div class="container">
+    <div id="match-container">
+      <!-- Loaded by JS -->
+      <div style="text-align:center;padding:80px 0;">
+        <div style="font-size:2rem;animation:spin 1s linear infinite;display:inline-block;">⟳</div>
+        <p style="color:var(--text-muted);margin-top:12px;">Finding your best matches...</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/script.js"></script>
+</body>
+</html>

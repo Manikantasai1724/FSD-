@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — SkillXchange</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="toast-container"></div>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="logo-icon">🔄</div>
+        SkillXchange
+      </a>
+      <div class="navbar-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Skills</a>
+        <a href="match.html" class="nav-link">Find Match</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="theme-toggle">🌙</button>
+        <a href="requests.html" class="notif-btn">🔔<span class="notif-dot"></span></a>
+        <button class="btn btn-danger btn-sm logout-btn">Logout</button>
+        <div class="nav-avatar" style="display:none;"></div>
+      </div>
+      <button class="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<nav class="mobile-nav" style="display:none;">
+  <a href="index.html" class="nav-link">🏠 Home</a>
+  <a href="explore.html" class="nav-link">🔍 Explore</a>
+  <a href="match.html" class="nav-link">🎯 Match</a>
+  <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+  <a href="community.html" class="nav-link">🌟 Community</a>
+  <a href="requests.html" class="nav-link">📨 Requests</a>
+  <button class="btn btn-danger btn-sm logout-btn" style="width:100%;">Logout</button>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+  <div class="container">
+    <h1>My Profile</h1>
+    <p>Manage your skills, track progress, and showcase your expertise</p>
+  </div>
+</div>
+
+<main style="padding:40px 0 80px;">
+  <div class="container">
+    <div id="profile-content">
+      <!-- Loaded by JS -->
+      <div style="text-align:center;padding:80px 0;">
+        <div style="font-size:2rem;margin-bottom:16px;">⏳</div>
+        <p style="color:var(--text-muted);">Loading profile...</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay" id="edit-profile-modal" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>✏️ Edit Profile</h3>
+      <button class="modal-close" onclick="Modal.hide('edit-profile-modal')">✕</button>
+    </div>
+    <form id="edit-profile-form">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="edit-name" class="form-control" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Bio / About</label>
+        <textarea id="edit-bio" class="form-control" placeholder="Tell others about yourself..." rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <div class="form-control-icon">
+          <span class="icon">📍</span>
+          <input type="text" id="edit-location" class="form-control" placeholder="City, Country">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Skills I Teach</label>
+        <div class="tags-input-container" id="edit-teach-tags">
+          <input type="text" placeholder="Add skill and press Enter">
+        </div>
+        <input type="hidden" id="edit-teach-hidden" value="[]">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Skills I Want to Learn</label>
+        <div class="tags-input-container" id="edit-learn-tags">
+          <input type="text" placeholder="Add skill and press Enter">
+        </div>
+        <input type="hidden" id="edit-learn-hidden" value="[]">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="Modal.hide('edit-profile-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes ✓</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const currentUser = Auth.currentUser();
+  if (!currentUser) return;
+
+  // Pre-fill edit form
+  function fillEditForm() {
+    const user = Auth.currentUser();
+    document.getElementById('edit-name').value = user.name || '';
+    document.getElementById('edit-bio').value = user.bio || '';
+    document.getElementById('edit-location').value = user.location || '';
+
+    // Fill existing tags
+    const teachContainer = document.getElementById('edit-teach-tags');
+    const learnContainer = document.getElementById('edit-learn-tags');
+
+    function fillTags(container, hiddenId, skills) {
+      skills.forEach(skill => {
+        const chip = document.createElement('span');
+        chip.className = 'tag-chip';
+        chip.innerHTML = `${skill}<button type="button" onclick="this.closest('.tag-chip').remove()">×</button>`;
+        container.insertBefore(chip, container.querySelector('input'));
+      });
+      document.getElementById(hiddenId).value = JSON.stringify(skills);
+    }
+    fillTags(teachContainer, 'edit-teach-hidden', user.skillsTeach || []);
+    fillTags(learnContainer, 'edit-learn-hidden', user.skillsLearn || []);
+  }
+
+  setupTagsInput('edit-teach-tags', 'edit-teach-hidden');
+  setupTagsInput('edit-learn-tags', 'edit-learn-hidden');
+
+  document.querySelector('[onclick*="edit-profile-modal"]')?.addEventListener('click', fillEditForm);
+
+  // Save edits
+  document.getElementById('edit-profile-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const users = Storage.get(STORAGE_KEYS.USERS) || [];
+    const idx = users.findIndex(u => u.id === currentUser.id);
+    if (idx === -1) return;
+
+    let teachSkills = [], learnSkills = [];
+    try { teachSkills = JSON.parse(document.getElementById('edit-teach-hidden').value) || []; } catch {}
+    try { learnSkills = JSON.parse(document.getElementById('edit-learn-hidden').value) || []; } catch {}
+
+    // Also capture tags currently in DOM
+    const teachChips = document.querySelectorAll('#edit-teach-tags .tag-chip');
+    const learnChips = document.querySelectorAll('#edit-learn-tags .tag-chip');
+    teachSkills = [...new Set([...Array.from(teachChips).map(c => c.textContent.replace('×','').trim()), ...teachSkills])].filter(Boolean);
+    learnSkills = [...new Set([...Array.from(learnChips).map(c => c.textContent.replace('×','').trim()), ...learnSkills])].filter(Boolean);
+
+    users[idx] = {
+      ...users[idx],
+      name: document.getElementById('edit-name').value || users[idx].name,
+      bio: document.getElementById('edit-bio').value,
+      location: document.getElementById('edit-location').value,
+      skillsTeach: teachSkills,
+      skillsLearn: learnSkills,
+    };
+    Storage.set(STORAGE_KEYS.USERS, users);
+    Storage.set(STORAGE_KEYS.CURRENT_USER, users[idx]);
+
+    Modal.hide('edit-profile-modal');
+    Toast.success('Profile updated successfully! ✨');
+    setTimeout(() => location.reload(), 500);
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exchange Requests — SkillXchange</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="toast-container"></div>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="logo-icon">🔄</div>
+        SkillXchange
+      </a>
+      <div class="navbar-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Skills</a>
+        <a href="match.html" class="nav-link">Find Match</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="theme-toggle">🌙</button>
+        <a href="requests.html" class="notif-btn">🔔<span class="notif-dot"></span></a>
+        <button class="btn btn-danger btn-sm logout-btn">Logout</button>
+        <div class="nav-avatar" style="display:none;"></div>
+      </div>
+      <button class="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<nav class="mobile-nav" style="display:none;">
+  <a href="index.html" class="nav-link">🏠 Home</a>
+  <a href="explore.html" class="nav-link">🔍 Explore</a>
+  <a href="match.html" class="nav-link">🎯 Match</a>
+  <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
+  <a href="community.html" class="nav-link">🌟 Community</a>
+  <button class="btn btn-danger btn-sm logout-btn" style="width:100%;">Logout</button>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <h1>📨 Exchange Requests</h1>
+    <p>Manage your incoming requests, track sent requests, and view active exchanges</p>
+  </div>
+</div>
+
+<main style="padding:40px 0 80px;">
+  <div class="container" style="max-width:800px;">
+    <div id="requests-container">
+      <div style="text-align:center;padding:80px 0;">
+        <div style="font-size:2rem;margin-bottom:16px;">⏳</div>
+        <p style="color:var(--text-muted);">Loading requests...</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/script.js"></script>
+</body>
+</html>

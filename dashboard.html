@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — SkillXchange</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="toast-container"></div>
+
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <div class="logo-icon">🔄</div>
+        SkillXchange
+      </a>
+      <div class="navbar-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Skills</a>
+        <a href="match.html" class="nav-link">Find Match</a>
+        <a href="community.html" class="nav-link">Community</a>
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+      </div>
+      <div class="navbar-actions">
+        <button class="theme-toggle">🌙</button>
+        <a href="requests.html" class="notif-btn">🔔<span class="notif-dot"></span></a>
+        <button class="btn btn-danger btn-sm logout-btn">Logout</button>
+        <div class="nav-avatar" style="display:none;"></div>
+      </div>
+      <button class="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<nav class="mobile-nav" style="display:none;">
+  <a href="index.html" class="nav-link">🏠 Home</a>
+  <a href="explore.html" class="nav-link">🔍 Explore</a>
+  <a href="match.html" class="nav-link">🎯 Match</a>
+  <a href="community.html" class="nav-link">🌟 Community</a>
+  <a href="requests.html" class="nav-link">📨 Requests</a>
+  <button class="btn btn-danger btn-sm logout-btn" style="width:100%;">Logout</button>
+</nav>
+
+<div class="page-header">
+  <div class="container">
+    <div id="dashboard-greeting">
+      <h1>📊 Dashboard</h1>
+      <p>Track your learning journey, active exchanges, and community activity</p>
+    </div>
+  </div>
+</div>
+
+<main style="padding:40px 0 80px;">
+  <div class="container">
+    <div class="dashboard-grid">
+      <!-- Sidebar -->
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-nav">
+          <div style="padding:12px 14px 16px;border-bottom:1px solid var(--border);margin-bottom:8px;" id="sidebar-profile">
+            <!-- filled by JS -->
+          </div>
+          <a href="dashboard.html" class="sidebar-nav-item active">📊 Overview</a>
+          <a href="profile.html" class="sidebar-nav-item">👤 My Profile</a>
+          <a href="explore.html" class="sidebar-nav-item">🔍 Explore Skills</a>
+          <a href="match.html" class="sidebar-nav-item">🎯 Find Matches</a>
+          <a href="requests.html" class="sidebar-nav-item">📨 Requests <span class="badge badge-danger" id="req-badge">0</span></a>
+          <a href="community.html" class="sidebar-nav-item">🌟 Community</a>
+          <div style="height:1px;background:var(--border);margin:8px 0;"></div>
+          <button class="sidebar-nav-item logout-btn" style="color:var(--danger);">🚪 Logout</button>
+        </div>
+
+        <!-- Quick Stat Card -->
+        <div class="card" style="margin-top:16px;">
+          <div style="text-align:center;padding:8px 0;">
+            <div id="streak-display-sidebar" class="streak-display" style="justify-content:center;margin-bottom:12px;">🔥 Loading...</div>
+            <div style="font-size:0.8125rem;color:var(--text-muted);">Keep your streak going!</div>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="card" style="margin-top:16px;">
+          <div style="font-weight:700;margin-bottom:12px;font-size:0.875rem;">Quick Actions</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <a href="explore.html" class="btn btn-primary btn-sm">🔍 Explore Skills</a>
+            <a href="match.html" class="btn btn-secondary btn-sm">🎯 Find Match</a>
+            <a href="community.html" class="btn btn-secondary btn-sm">🌟 Community</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div>
+        <div id="dashboard-content">
+          <div style="text-align:center;padding:80px 0;">
+            <div style="font-size:2rem;margin-bottom:12px;">⏳</div>
+            <p style="color:var(--text-muted);">Loading dashboard...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="js/script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const user = Auth.currentUser();
+  if (!user) return;
+
+  // Greet
+  const greetEl = document.getElementById('dashboard-greeting');
+  if (greetEl) {
+    const hr = new Date().getHours();
+    const greet = hr < 12 ? '🌅 Good morning' : hr < 18 ? '☀️ Good afternoon' : '🌙 Good evening';
+    greetEl.innerHTML = `<h1>${greet}, ${user.name.split(' ')[0]}!</h1><p>Here's what's happening with your learning journey</p>`;
+  }
+
+  // Sidebar profile
+  const sidebarProfile = document.getElementById('sidebar-profile');
+  if (sidebarProfile) {
+    sidebarProfile.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="avatar avatar-md" style="background:${getUserGradient(user.id)};color:white;">${getInitials(user.name)}</div>
+        <div>
+          <div style="font-weight:700;font-size:0.9375rem;">${user.name}</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">⭐ ${user.reputation} rep</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Streak
+  const streakEl = document.getElementById('streak-display-sidebar');
+  if (streakEl) streakEl.innerHTML = `🔥 ${user.streak || 0} Day Streak`;
+
+  // Request badge
+  const requests = Storage.get(STORAGE_KEYS.REQUESTS) || [];
+  const pending = requests.filter(r => (r.toUserId === user.id || !r.toUserId) && r.status === 'incoming').length;
+  const reqBadge = document.getElementById('req-badge');
+  if (reqBadge) { reqBadge.textContent = pending; reqBadge.style.display = pending ? 'inline-flex' : 'none'; }
+});
+</script>
+</body>
+</html>
