@@ -179,13 +179,13 @@ const SEED_CHALLENGES = [
 
 const SEED_DISCUSSIONS = [
   {
-    id: 'd1', authorId: 'u1', authorName: 'Alex Chen',
+    id: 'd1', authorId: 'u1', authorName: 'Virat Kohli',
     title: 'Best resources for learning React in 2024?',
     content: 'Looking for recommendations on learning React. What courses or projects worked best for you?',
     votes: 24, comments: 12, date: new Date(Date.now() - 2*60*60*1000).toISOString(), category: 'Technology'
   },
   {
-    id: 'd2', authorId: 'u2', authorName: 'Priya Sharma',
+    id: 'd2', authorId: 'u2', authorName: 'Anushka Sharma',
     title: 'Tips for making portfolio projects stand out',
     content: 'After reviewing many portfolios, I\'ve noticed what makes some stand out. Sharing my thoughts here.',
     votes: 45, comments: 19, date: new Date(Date.now() - 5*60*60*1000).toISOString(), category: 'Design'
